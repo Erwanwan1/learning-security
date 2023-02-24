@@ -13,12 +13,12 @@ function connectDb()
     }
 }
 
-function logUser($email, $password)
+function logUser($email)
 {
     $connexion = connectDb();
-    $sql = 'SELECT * FROM users WHERE email = :email  AND password = :password';
+    $sql = 'SELECT * FROM users WHERE email = :email';
     $stmt = $connexion->prepare($sql);
-    $stmt->execute([':email' => $email, ':password' => $password]);
+    $stmt->execute([':email' => $email]);
 
     return $stmt->fetchAll(PDO::FETCH_OBJ);
 }
@@ -28,6 +28,15 @@ function getUser($id) {
     $sql = 'SELECT * FROM users WHERE id = :id';
     $stmt = $connexion->prepare($sql);
     $stmt->execute([':id' => $id]);
+
+    return $stmt->fetchAll(PDO::FETCH_OBJ);
+}
+
+function getUserFromMail($email) {
+    $connexion = connectDb();
+    $sql = 'SELECT * FROM users WHERE email = :email';
+    $stmt = $connexion->prepare($sql);
+    $stmt->execute([':email' => $email]);
 
     return $stmt->fetchAll(PDO::FETCH_OBJ);
 }

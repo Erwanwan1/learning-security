@@ -3,10 +3,13 @@ require_once('functions.php');
 session_start();
 $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
 if (isset($_GET['email']) && isset($_GET['password'])) {
-    $users = logUser($_GET['email'], $_GET['password']);
-    if(!empty($users)) {
-        $user = $users[0];
-        $_SESSION['user'] = $user;
+    $password = getUserFromMail($_GET['email']);
+    if (isset($password[0]) && password_verify(htmlentities($_GET['password']), $password[0]->password)) {
+        $users = logUser($_GET['email']);
+        if(!empty($users)) {
+            $user = $users[0];
+            $_SESSION['user'] = $user;
+        }
     }
 }
 ?>

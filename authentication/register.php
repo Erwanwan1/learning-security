@@ -10,7 +10,7 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
     $result = $zxcvbn->passwordStrength($_POST['password']);
 
     if ($result['score'] >= 3) {
-        $result = saveUser(htmlentities($_POST['username']), htmlentities($_POST['email']), htmlentities($_POST['password']));
+        $result = saveUser(htmlentities($_POST['username']), htmlentities($_POST['email']), password_hash(htmlentities($_POST['password']), PASSWORD_DEFAULT));
         if($result === true) {
             header('Location: index.php');
         } else {
@@ -78,7 +78,6 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
         var password_strength = document.getElementById("password_strength");
 
         function validatePassword(){
-            console.log('here');
             if(password.value != confirm_password.value) {
                 confirm_password.setCustomValidity("Les mots de passe ne correspondent pas");
                 return false;
