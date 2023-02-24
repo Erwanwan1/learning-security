@@ -2,9 +2,11 @@
 require_once('functions.php');
 $user = null;
 if(isset($_GET['id'])) {
-    $users = getUser($_GET['id']);
-    if(!empty($users)) {
-        $user = $users[0];
+    if (is_numeric($_GET['id'])) {
+        $users = getUser($_GET['id']);
+        if(!empty($users)) {
+            $user = $users[0];
+        }
     }
 }
 ?>
