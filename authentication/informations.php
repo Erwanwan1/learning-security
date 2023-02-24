@@ -2,7 +2,7 @@
 require_once('functions.php');
 session_start();
 
-if(isset($_GET['id']) && isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+if(isset($_SESSION['user']) && !empty($_SESSION['user'])) {
     $user=$_SESSION['user'];
 ?>
 
@@ -28,7 +28,7 @@ if(isset($_GET['id']) && isset($_SESSION['user']) && !empty($_SESSION['user'])) 
 <br/>
 <br/>
 <a href="index.php">Accueil</a>
-<?php
+<?php 
 }
 else {
     header('Location: index.php');

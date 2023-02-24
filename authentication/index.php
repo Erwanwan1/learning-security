@@ -47,7 +47,7 @@ if (isset($_GET['email']) && isset($_GET['password'])) {
     <a href="register.php">Je m'inscrit</a>
     <?php else: ?>
         <h1>Bienvenue <?= $user->email ?></h1>
-    <a href="informations.php?id=<?= $user->id ?>">Mes informations</a><br/>
+    <a href="informations.php">Mes informations</a><br/>
     <a href="logout.php">Logout</a>
     <?php endif ?>
 </div>
