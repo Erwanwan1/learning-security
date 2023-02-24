@@ -1,14 +1,9 @@
 <?php
 require_once('functions.php');
-$user = null;
-if(isset($_GET['id'])) {
-    if (is_numeric($_GET['id'])) {
-        $users = getUser($_GET['id']);
-        if(!empty($users)) {
-            $user = $users[0];
-        }
-    }
-}
+session_start();
+
+if(isset($_GET['id']) && isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+    $user=$_SESSION['user'];
 ?>
 
 <?php if($user): ?>
@@ -33,3 +28,8 @@ if(isset($_GET['id'])) {
 <br/>
 <br/>
 <a href="index.php">Accueil</a>
+<?php
+}
+else {
+    header('Location: index.php');
+}
