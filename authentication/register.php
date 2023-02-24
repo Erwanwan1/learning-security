@@ -1,12 +1,24 @@
 <?php
+require_once 'vendor/autoload.php';
 require_once('functions.php');
 
+use ZxcvbnPhp\Zxcvbn;
+
 if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['password'])) {
-    $result = saveUser(htmlentities($_POST['username']), htmlentities($_POST['email']), htmlentities($_POST['password']));
-    if($result === true) {
-        header('Location: index.php');
-    } else {
-        echo "Une erreur est survenue " . $result;
+
+    $zxcvbn = new Zxcvbn();
+    $result = $zxcvbn->passwordStrength($_POST['password']);
+
+    if ($result['score'] >= 3) {
+        $result = saveUser(htmlentities($_POST['username']), htmlentities($_POST['email']), htmlentities($_POST['password']));
+        if($result === true) {
+            header('Location: index.php');
+        } else {
+            echo "Une erreur est survenue " . $result;
+        }
+    }
+    else {
+        $passwordStrenght = "Mot de passe trop faible";
     }
 }
 ?>
@@ -40,7 +52,12 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
         </div>
         <div class="form-group">
             <label for="password">Mot de passe :</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+            <input type="password" class="form-control" id="password" name="password" onkeyup="" required>
+            <div>
+                <label>Force du mot de passe :</label>
+                <progress id="password_strength" value="0" max="4"></progress>
+                <span><?php if (isset($passwordStrenght)) {echo $passwordStrenght;} ?></span>
+            </div>
             <div class="invalid-feedback">
                 S'il vous plaît entrez un mot de passe.
             </div>
@@ -54,9 +71,11 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
         </div>
         <button type="submit" class="btn btn-primary">S'inscrire</button>
     </form>
+    <script type="text/javascript" src="zxcvbn.js"></script>
     <script>
         var password = document.getElementById("password");
         var confirm_password = document.getElementById("password-confirm");
+        var password_strength = document.getElementById("password_strength");
 
         function validatePassword(){
             console.log('here');
@@ -90,6 +109,21 @@ if (isset($_POST['username']) && isset($_POST['email']) && isset($_POST['passwor
                 });
             }, false);
         })();
+
+        function computePasswordStrenght(){
+            var result = zxcvbn(password.value);
+
+            if (result.score < 3) {
+                password_strength.style.background = "red";
+            } else if (result.score === 3) {
+                password_strength.style.background = "orange";
+            } else if (result.score > 3) {
+                password_strength.style.background = "green";
+            }
+            password_strength.value = result.score;
+        }
+
+        password.onkeyup = computePasswordStrenght;
     </script>
 </div>
 </body>

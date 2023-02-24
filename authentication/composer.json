@@ -1,0 +1,17 @@
+{
+    "name": "erwan/authentication",
+    "autoload": {
+        "psr-4": {
+            "Erwan\\Authentication\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Erwanwan1",
+            "email": "e.zwick@iia-formation.fr"
+        }
+    ],
+    "require": {
+        "bjeavons/zxcvbn-php": "^1.0"
+    }
+}
